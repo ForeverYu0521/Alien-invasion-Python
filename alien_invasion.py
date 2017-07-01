@@ -1,11 +1,11 @@
 #-*-coding:utf-8-*-
 import pygame
+import game_functions as gf
 
 from settings import Settings
 from game_stats import GameStats
 from ship import Ship
 from alien import Alien
-import game_functions as gf
 from pygame.sprite import Group
 from button import Button
 from scoreboard import Scoreboard
@@ -42,7 +42,8 @@ def run_game():
                         aliens, bullets)
         if stats.game_active:
             ship.update()
-            gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
+            gf.update_bullets(ai_settings, screen, stats, sb, ship, 
+                              aliens, bullets)
             gf.update_aliens(ai_settings, stats, screen, ship, 
                              aliens, bullets)
 

@@ -133,7 +133,7 @@ def create_fleet(ai_settings, screen, ship, aliens):
             create_alien(ai_settings, screen, aliens, alien_number,
                          row_number)
 
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     #更新子弹的位置，并删除已经消失的子弹
     bullets.update()
         
@@ -141,14 +141,23 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, 
-                                  bullets)
+    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
+                                  aliens,  bullets)
 
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, 
-                                  bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
+                                  aliens, bullets):
+
+    #记录碰撞发生前的外星人数目
+    pre_numbers = len(aliens)
+
     #检查子弹是否击中了外星人，如果是，就删除相应的子弹和外星人
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True) 
     
+    if collisions:
+        scores = ai_settings.alien_points * (pre_numbers - len(aliens))
+        stats.score += scores
+        sb.prep_score()
+
     if len(aliens) == 0: 
         bullets.empty()
         ai_settings.increase_speed()
@@ -158,7 +167,7 @@ def nums_bullets(ai_settings, screen, bullets):
     nums = ai_settings.bullets_allowed - len(bullets)
     my_font = pygame.font.SysFont("arial", 32)
     nums_bullets_surface = my_font.render(str(nums), True, (0, 0, 0),
-                                                           (255, 255, 255))
+                                                    ai_settings.bg_color)
     nums_bullets_rect = nums_bullets_surface.get_rect()
     screen.blit(nums_bullets_surface,nums_bullets_rect)
 
