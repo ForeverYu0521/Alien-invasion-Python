@@ -35,8 +35,7 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(ai_settings, screen, stats, play_button, ship, aliens, 
-                 bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets):
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,9 +49,11 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens,
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(ai_settings, screen, stats, play_button, ship,                               aliens, bullets, mouse_x, mouse_y)
+            check_play_button(ai_settings, screen, stats, play_button, ship, 
+                    aliens, bullets, mouse_x, mouse_y)
 
-def check_play_button(ai_settings, screen, stats, play_button, ship, aliens,                       bullets, mouse_x, mouse_y):
+def check_play_button(ai_settings, screen, stats, play_button, ship, 
+        aliens, bullets, mouse_x, mouse_y):
     #玩家单击play按钮时开始新游戏
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
@@ -75,7 +76,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship, aliens,    
         ship.center_ship()
 
 def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, 
-                  play_button):
+        play_button):
 
     screen.fill(ai_settings.bg_color)
 
@@ -124,16 +125,17 @@ def create_fleet(ai_settings, screen, ship, aliens):
     #外星人间距为外星人宽度
     alien = Alien(ai_settings, screen)
     number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
-    number_rows = get_number_rows(ai_settings, ship.rect.height,
-                                  alien.rect.height * 3)
+    number_rows = get_number_rows(ai_settings, ship.rect.height, 
+            alien.rect.height * 3)
 
     for row_number in range(number_rows):
         for alien_number in range(number_aliens_x):
             #创建一个外星人并将其加入当前行
-            create_alien(ai_settings, screen, aliens, alien_number,
-                         row_number)
+            create_alien(ai_settings, screen, aliens, alien_number, 
+                    row_number)
 
-def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, stats, sb, ship, aliens, 
+        bullets):
     #更新子弹的位置，并删除已经消失的子弹
     bullets.update()
         
@@ -142,10 +144,9 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
             bullets.remove(bullet)
 
     check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
-                                  aliens,  bullets)
+            aliens, bullets)
 
-def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
-                                  aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
 
     #记录碰撞发生前的外星人数目
     pre_numbers = len(aliens)
@@ -166,8 +167,8 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,
 def nums_bullets(ai_settings, screen, bullets):
     nums = ai_settings.bullets_allowed - len(bullets)
     my_font = pygame.font.SysFont("arial", 32)
-    nums_bullets_surface = my_font.render(str(nums), True, (0, 0, 0),
-                                                    ai_settings.bg_color)
+    nums_bullets_surface = my_font.render(str(nums), True, (0, 0, 0), 
+            ai_settings.bg_color)
     nums_bullets_rect = nums_bullets_surface.get_rect()
     screen.blit(nums_bullets_surface,nums_bullets_rect)
 
