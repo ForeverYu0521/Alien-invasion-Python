@@ -7,6 +7,8 @@ class GameStats():
         self.ai_settings = ai_settings
         self.reset_stats()
         self.game_active = False
+        #在任何时候都不应重置最高分
+        self.high_score = 0
 
     def reset_stats(self):
         #初始化游戏运行期间可能变化的统计信息

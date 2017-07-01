@@ -75,6 +75,7 @@ def check_play_button(ai_settings, screen, stats, play_button, ship,
         create_fleet(ai_settings, screen, ship, aliens)
         ship.center_ship()
 
+
 def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, 
         play_button):
 
@@ -146,6 +147,12 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens,
     check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
             aliens, bullets)
 
+def check_high_score(stats, sb):
+   #检查是否诞生了最高分
+   if stats.score > stats.high_score:
+       stats.high_score = stats.score
+       sb.prep_high_score()
+
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
 
     #记录碰撞发生前的外星人数目
@@ -158,6 +165,9 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
         scores = ai_settings.alien_points * (pre_numbers - len(aliens))
         stats.score += scores
         sb.prep_score()
+        
+        #检查最高分
+        check_high_score(stats, sb)
 
     if len(aliens) == 0: 
         bullets.empty()
