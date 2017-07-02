@@ -60,6 +60,12 @@ def check_play_button(ai_settings, screen, stats, play_button, ship,
         #重置游戏设置
         ai_settings.initialize_dynamic_settings()
 
+        #重置记分牌图像
+        self.prep_score()
+        self.prep_high_score()
+        self.prep_level()
+        self.prep_ships()
+
         #隐藏光标
         pygame.mouse.set_visible(False)
 
@@ -172,8 +178,12 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
     if len(aliens) == 0: 
         bullets.empty()
         ai_settings.increase_speed()
-        create_fleet(ai_settings, screen, ship, aliens)
 
+        #提高等级
+        stats.level += 1
+        sb.prep_level()
+
+        create_fleet(ai_settings, screen, ship, aliens)
 def nums_bullets(ai_settings, screen, bullets):
     nums = ai_settings.bullets_allowed - len(bullets)
     my_font = pygame.font.SysFont("arial", 32)
