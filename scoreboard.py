@@ -34,7 +34,7 @@ class Scoreboard():
         #将得分放在屏幕右上角
         self.score_rect = self.score_image.get_rect()
         self.score_rect.right = self.screen_rect.right - 20
-        self.score_rect.top = 20
+        self.score_rect.top = 0
 
     def prep_high_score(self):
         #将最高得分渲染成图像
@@ -72,7 +72,7 @@ class Scoreboard():
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
             ship = Ship(self.ai_settings, self.screen)
-            ship.rect.x = 10 + ship_number * ship.rect.width
-            ship.rect.y = 20
+            ship.rect.x = ship_number * ship.rect.width
+            ship.rect.y = 0
             self.ships.add(ship)
 
