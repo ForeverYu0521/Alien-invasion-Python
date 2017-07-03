@@ -1,5 +1,6 @@
 #-*-coding:utf-8-*-
 import sys
+import random
 
 from time import sleep
 import pygame
@@ -89,8 +90,7 @@ def Play_game(ai_settings, screen, stats, sb, ship, aliens, bullets):
         ship.center_ship()
 
 
-def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, 
-        play_button):
+def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button, ItemBullet):
 
     screen.fill(ai_settings.bg_color)
 
@@ -101,9 +101,13 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets,
     
     aliens.draw(screen)
 
+    ItemBullet.blitme()
+
     nums_bullets(ai_settings, screen, bullets)
 
     sb.show_score()
+
+    sb.prep_ships()
 
     if not stats.game_active:
         play_button.draw_button()
@@ -157,8 +161,7 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens,
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, 
-            aliens, bullets)
+    check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
 def check_high_score(stats, sb):
    #检查是否诞生了最高分
@@ -257,6 +260,27 @@ def update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets):
         ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets)
 
     check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets)
+
+def update_itembullet(ai_settings, screen, ship, ItemBullet, aliens):
+    if not ItemBullet.bullet_flag:
+        number = random.randint(0, ai_settings.ItemBullteDropFre)
+        if number == 1:
+            ItemBullet.rect.x = random.randint(0,120) * 10 
+            ItemBullet.bullet_flag = True
+
+    screen_rect = screen.get_rect()
+    if ItemBullet.recty >= screen_rect.bottom:
+        Item_Init(ItemBullet)
+    if pygame.sprite.collide_rect(ItemBullet, ship):
+        bullets_change(ai_settings)
+        Item_Init(ItemBullet)
+    ItemBullet.draw()
+    
+def Item_Init(ItemBullet):
+    #物品碰撞和消失时
+    ItemBullet.bullet_flag = False
+    ItemBullet.recty = float(-1 * ItemBullet.rect.height)
+    ItemBullet.rect.y = -1 * ItemBullet.rect.height
 
 def bullets_change(ai_settings):
    #增加子弹的宽度
