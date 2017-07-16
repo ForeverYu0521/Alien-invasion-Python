@@ -32,6 +32,7 @@ def run_game():
     #创建一个飞船
     ship = Ship(ai_settings, screen)
     
+    #创建外星人
     aliens = Group()
 
     #创建外星人群
